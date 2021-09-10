@@ -27,10 +27,18 @@ $default = <<INSTALL
   echo -e "==> Standard CentOS configuration bootstraping\n"
   setenforce 0
   sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
-  yum install -y epel-release
 INSTALL
 
 Vagrant.configure(vagrantfile_api_version) do |config|
+
+#########################
+# DNS resolution setup
+#########################
+  config.hostmanager.enabled = true
+  #config.hostmanager.manage_host = true
+  config.hostmanager.manage_guest = true
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
 
 #####################################################
 # Default configuration settings (VM provisioning)
@@ -39,7 +47,7 @@ Vagrant.configure(vagrantfile_api_version) do |config|
   vm_default = proc do |vb|
     vb.vm.boot_timeout = 90
     vb.ssh.insert_key = false
-    vb.vbguest.auto_update = true
+    vb.vbguest.auto_update = false
     vb.vbguest.installer_options = { allow_kernel_upgrade: true, reboot_timeout: 5000 }
   end
 
@@ -52,7 +60,7 @@ Vagrant.configure(vagrantfile_api_version) do |config|
       vm_default.call(config)
       config.vm.box = default_os
       config.vm.provider :virtualbox do |vb|
-        vb.name = "%s" % opts[:name].to_s
+        #vb.name = "%s" % opts[:name].to_s
         vb.gui = false
         vb.customize [
           "modifyvm", :id,
@@ -66,11 +74,11 @@ Vagrant.configure(vagrantfile_api_version) do |config|
         ]
       end
       config.vm.host_name = "%s.#{domain}" % opts[:name].to_s
+      config.hostmanager.aliases = "%s" % opts[:name].to_s
       config.vm.network :private_network, ip: opts[:ip]
-      config.vbguest.auto_update = false
       config.vm.provision "shell", inline: $default
       if opts[:role] == 'mgt'
-        config.vm.synced_folder ".", "/vagrant", disabled: false, type: "rsync", rsync__args: ['--verbose', '--archive', '--delete', '-z'] , rsync__exclude: ['.git','venv']
+        config.vm.synced_folder ".", "/vagrant", disabled: false, type: "rsync", rsync__args: ['--verbose', '--archive', '--delete', '-z'], rsync__exclude: ['.git','venv']
         config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
       end
     end
