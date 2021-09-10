@@ -18,6 +18,11 @@ Ansible tasks
 Switch to directory **project1**
 1. Create inventory and include servers into group **web**
 2. Create playbook which contains 3 tasks (see below for details) and playbook will deploy to group **web**
-3. task to create users (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html):
-	- **david** with uid **4467** and home directory **/home/david_home** one server1
-	- **john** with secondary group **wheel** one both servers
+3. include task to create users (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html):
+	- **david** with uid **4467** and home directory **/home/david_home** on **server1**
+	- **john** with secondary group **wheel** on both servers
+4. include task to ensure the following packages exist (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/yum_module.html or https://docs.ansible.com/ansible/latest/collections/ansible/builtin/package_module.html):
+	- **vim** on **server2**
+	- **unzip** and **bind-utils** on both servers
+	- **httpd** on **server1**
+5. include task to ensure **firewalld** is disabled and not running (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html or https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html) on any of the servers
