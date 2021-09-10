@@ -26,3 +26,13 @@ Switch to directory **project1**
 	- **unzip** and **bind-utils** on both servers
 	- **httpd** on **server1**
 5. include task to ensure **firewalld** is disabled and not running (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html or https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html) on any of the servers
+
+Ansible deployment
+------------------
+```shell
+# make sure you're in root directory of the repository
+vagrant ssh
+# inside ansible vm change to project1 directory where projects inventory and playbooks are
+cd /vagrant/project1
+# run ansible-playbook with your playbook(s)
+```
