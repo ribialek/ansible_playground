@@ -78,7 +78,7 @@ Vagrant.configure(vagrantfile_api_version) do |config|
       config.vm.network :private_network, ip: opts[:ip]
       config.vm.provision "shell", inline: $default
       if opts[:role] == 'mgt'
-        config.vm.synced_folder ".", "/vagrant", disabled: false, type: "rsync", rsync__args: ['--verbose', '--archive', '--delete', '-z'], rsync__exclude: ['.git','venv']
+        config.vm.synced_folder ".", "/vagrant", disabled: false, type: "nfs"
         config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
       end
     end
