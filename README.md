@@ -13,3 +13,4 @@ vagrant plugin install vagrant-vbguest vagrant-hostmanager
 vagrant box add centos/7
 ```
 - [project1](./project1/README.md)
+New line added 
