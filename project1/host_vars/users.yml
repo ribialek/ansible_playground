@@ -1,0 +1,11 @@
+
+david:
+    name: david
+    uid: 1040
+    group: admin
+    home: '/home/david_home'
+john:
+    name: john
+    comment: John Doe
+    groups:
+      - wheel
