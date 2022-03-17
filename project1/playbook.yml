@@ -1,34 +1,16 @@
 ---
-  - name: Playbook for server1
-    hosts: server1
-    remote_user: vagrant
-    vars_files:
-      - ./host_vars/users.yml
+  - name: Playbook for user management
+    hosts: web
     tasks:
-      - name: Add david to server 1 as admin
+      - name: User management
+        become: True
+        become_user: root
         ansible.builtin.user:
-          name: "{{ david.name }}"
-          create_home: True
-          home: "{{ david.home }}"
-          uid: "{{ david.uid }}"
-          group: adm
-      - name: Add the user 'johnd' to a secondary group of 'wheel' server1
-        ansible.builtin.user:
-          name: "{{ john.name }}"
-          group: nobody
-          groups: "{{ john.groups }}"
-          append: yes
-
-  - name: Playbook for server2
-    hosts: server2
-    remote_user: vagrant
-    vars_files:
-      - ./host_vars/users.yml
-    tasks:
-      - name: install server 02 
-        ansible.builtin.user:
-          name: "{{ john.name }}"
-          group: nobody
-          groups: "{{ john.groups }}"
-          append: yes
-          
+          name: "{{ item.name }}"
+          home: "{{ item.home | default(('/' if item.name == 'root' else '/home/') + item.name) }}"
+          uid: "{{ item.uid }}"
+          group: "{{ item.group | default(omit) }}"
+          groups: "{{ item.groups | default(omit) }}"
+          append: "{{ yes if item.groups is defined | default(omit) }}"
+          remove: yes
+        loop: "{{ users }}"

@@ -1,0 +1,6 @@
+
+users:
+- name: john
+  comment: John Doe
+  groups:
+    - wheel
