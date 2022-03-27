@@ -92,8 +92,8 @@ Vagrant.configure(vagrantfile_api_version) do |config|
       config.vm.provision "shell", inline: $default, run: "once"
       if opts[:role] == 'mgt'
         config.vm.synced_folder ".", "/vagrant", disabled: false, type: "nfs"
-        #config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
-        config.vm.provision "file", source: "../../../../vm/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
+        config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
+        #config.vm.provision "file", source: "../../../../vm/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
         config.vm.provision "shell", inline: $mgt, run: "once"
       end
     end
