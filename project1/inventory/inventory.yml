@@ -6,3 +6,4 @@ all:
           ansible_host: 10.0.13.152
         server2:
           ansible_host: 10.0.13.153
+

@@ -1,8 +1,12 @@
 
+user_groups:
+  - name: 'admin'
+  - name: 'dev'
+
 users:
-- name: david
+- name: 'david'
   uid: 1040
-  group: admin
+  group: 'admin'
   home: '/home/david_home'
 #- name: john
 #  comment: John Doe

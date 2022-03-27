@@ -27,6 +27,19 @@ $default = <<INSTALL
   echo -e "==> Standard CentOS configuration bootstraping\n"
   setenforce 0
   sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+  timedatectl set-timezone Europe/London
+INSTALL
+
+$mgt = <<INSTALL
+  echo -e "==> Configuring ansible management station\n"
+  yum -y install epel-release
+  yum -y install ansible
+  #yum -y install centos-release-scl
+  #yum -y install python38
+  #yum -y update
+  #python3 -m pip install setuptools-rust
+  #python3 -m pip install --upgrade pip
+  #python3 -m pip install ansible
 INSTALL
 
 Vagrant.configure(vagrantfile_api_version) do |config|
@@ -76,10 +89,12 @@ Vagrant.configure(vagrantfile_api_version) do |config|
       config.vm.host_name = "%s.#{domain}" % opts[:name].to_s
       config.hostmanager.aliases = "%s" % opts[:name].to_s
       config.vm.network :private_network, ip: opts[:ip]
-      config.vm.provision "shell", inline: $default
+      config.vm.provision "shell", inline: $default, run: "once"
       if opts[:role] == 'mgt'
         config.vm.synced_folder ".", "/vagrant", disabled: false, type: "nfs"
-        config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
+        #config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
+        config.vm.provision "file", source: "../../../../vm/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
+        config.vm.provision "shell", inline: $mgt, run: "once"
       end
     end
   end

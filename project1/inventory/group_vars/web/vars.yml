@@ -1,4 +1,5 @@
 
+user_groups: []
 users:
 - name: john
   comment: John Doe
