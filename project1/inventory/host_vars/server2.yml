@@ -1,0 +1,11 @@
+users:
+- name: john
+  comment: John Doe
+  groups:
+    - wheel
+packages:
+  present: 
+    name:
+        - unzip
+        - bind-utils
+        - vim

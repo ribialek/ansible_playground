@@ -1,14 +1,15 @@
-
-user_groups:
-  - name: 'admin'
-  - name: 'dev'
-
 users:
-- name: 'david'
-  uid: 1040
-  group: 'admin'
-  home: '/home/david_home'
-#- name: john
-#  comment: John Doe
-#  groups:
-#    - wheel
+  - name: 'david'
+    uid: 4467
+    home: '/home/david_home'
+  - name: john
+    comment: John Doe
+    groups:
+      - wheel
+
+packages:
+  present: 
+    name:
+        - unzip
+        - bind-utils
+        - httpd

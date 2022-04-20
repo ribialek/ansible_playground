@@ -28,3 +28,18 @@
           state: "{{ item.status | default('present') }}"
           remove: yes
         loop: "{{ users }}"
+      
+      - name: Check/Install these packages
+        ansible.builtin.package:
+          name: "{{ item }}"
+          state: "present"
+        loop: "{{ packages.present.name }}"
+        become: true
+           
+      - name: ensure firewalld is disabled and not running
+        ansible.builtin.systemd:
+          name: firewalld
+          state: stopped
+          enabled: False
+
+
