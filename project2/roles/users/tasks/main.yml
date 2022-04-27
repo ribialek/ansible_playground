@@ -1,2 +1,29 @@
 ---
 # tasks file for users
+
+- name: Group management.
+  become: True
+  become_user: root
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    system: "{{ item.system | default(false) }}"
+    gid: "{{ item.gid | default(omit) }}"
+    state: "{{ item.status | default('present') }}"
+  loop: "{{ user_groups }}"
+  when:
+    - user_groups is defined
+    - user_groups | length > 0
+
+- name: User management
+  become: True
+  become_user: root
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    home: "{{ item.home | default(('/' if item.name == 'root' else '/home/') + item.name) }}"
+    uid: "{{ item.uid | default(omit)  }}"
+    group: "{{ item.group | default(omit) }}"
+    groups: "{{ item.groups | default(omit) }}"
+    append: "{% if item.groups is defined %}yes{% else %}no{% endif %}"
+    state: "{{ item.status | default('present') }}"
+    remove: yes
+  loop: "{{ users }}"
