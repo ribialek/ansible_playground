@@ -11,9 +11,9 @@ Requirements
 ------------
 ```shell
 # Install VBox and vagrant
-# mac users we use of brew package manager
+# mac users with use of brew package manager
 brew install --cask virtualbox-extension-pack virtualbox vagrant
-# windows users we use of chocolatey package manager
+# windows users with use of chocolatey package manager
 cinst -y virtualbox virtualbox-guest-additions-guest.install vagrant
 # It will require restart and allowing Oracle software to interact with system (on mac Privacy & Security I believe)
 # Install vagrant plugins
