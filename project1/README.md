@@ -11,6 +11,10 @@ Infrastructure Setup
 git pull
 vagrant up
 vagrant status
+# accessing instances
+vagrant ssh # to access ansible management instance
+vagrant ssh server1 # to access centos client instance
+vagrant ssh server2 # to access ubuntu client instance
 ```
 
 Ansible tasks
