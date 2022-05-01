@@ -13,8 +13,8 @@ vagrant up
 vagrant status
 # accessing instances
 vagrant ssh # to access ansible management instance
-vagrant ssh server1 # to access centos client instance
-vagrant ssh server2 # to access ubuntu client instance
+vagrant ssh server1 # to access server1 client instance
+vagrant ssh server2 # to access server2 client instance
 ```
 
 Ansible tasks
