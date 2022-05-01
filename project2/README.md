@@ -64,3 +64,11 @@ vagrant ssh
 cd /vagrant/project2
 # run ansible-playbook with your playbook(s)
 ```
+
+Vagrant cleanup
+----------------
+```shell
+# make sure you're in root directory of the repository
+cd project2
+vagrant destroy -f
+```
