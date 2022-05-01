@@ -15,5 +15,13 @@ vagrant box add ubuntu/focal64
 ```
 Each project has its own infrastructure managed by vagrant. To avoid conflicts (nfs share errors) destroy vagrant infrastructure in project that was completed
 
-- [project1](./project1/README.md)
-- [project2](./project2/README.md)
+[project1](./project1/README.md)<br />
+&emsp;==> ansible install and configuration<br />
+&emsp;==> inventory<br />
+&emsp;==> basic playbooks with variables<br />
+&emsp;==> variable precedence rules<br />
+
+[project2](./project2/README.md)<br />
+&emsp;==> ansible roles<br />
+&emsp;==> running tasks conditionally<br />
+&emsp;==> use system facts as register variables<br />
