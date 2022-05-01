@@ -30,7 +30,6 @@ Switch to directory **project2** if not already there
 	- task to generate users with option to specify 'uid' if required using the following variable (see code below)
 	- user resources to be deployed to all managed  systems
 	```shell
-	# make sure you're in root directory of the repository
 	ssh_users:
 		- name: "user1"
 			uid: 1006
