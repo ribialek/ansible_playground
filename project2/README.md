@@ -1,4 +1,4 @@
-Ansible Project 1
+Ansible Project 2
 ==================
 
 Infrastructure Setup
