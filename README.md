@@ -1,20 +1,30 @@
 Ansible Playground
 ==================
 
+Overview
+---------
+- each project has its own infrastructure managed by vagrant.
+- vagrant infrastructure to be destroyed when project completed.<br />
+  NOTE: destroy infrastructure to avoid conflicts (nfs share errors)
+
 Requirements
 ------------
 ```shell
 # Install VBox and vagrant
+# mac users we use of brew package manager
 brew install --cask virtualbox-extension-pack virtualbox vagrant
-# It will require restart and allowing Oracle software to interact with system (Privacy & Security I believe)
+# windows users we use of chocolatey package manager
+cinst -y virtualbox virtualbox-guest-additions-guest.install vagrant
+# It will require restart and allowing Oracle software to interact with system (on mac Privacy & Security I believe)
 # Install vagrant plugins
 vagrant plugin install vagrant-vbguest vagrant-hostmanager
 # And download vagrant box
 vagrant box add centos/7
 vagrant box add ubuntu/focal64
 ```
-Each project has its own infrastructure managed by vagrant. To avoid conflicts (nfs share errors) destroy vagrant infrastructure in project that was completed
 
+Projects
+---------
 [project1](./project1/README.md)<br />
 &emsp;==> ansible install and configuration<br />
 &emsp;==> inventory<br />
