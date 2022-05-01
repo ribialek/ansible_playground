@@ -22,7 +22,7 @@ Ansible tasks
 Switch to directory **project2** if not already there
 1. Create directory structure which include placeholder for roles, playbooks and inventory
 2. Update ansible.cfg configuration used by the project2 with options for location of the inventory and roles (https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html)
-3. using ansible-galaxy (https://galaxy.ansible.com/docs/contributing/creating_role.html) create the following roles (make sure created roles are in correct path):
+3. Using ansible-galaxy (https://galaxy.ansible.com/docs/contributing/creating_role.html) create the following roles (make sure created roles are in correct path):
 	- **users** -> role used for user/group management
 	- **packages** -> role used for software management
 	- **services** -> role used for services management
