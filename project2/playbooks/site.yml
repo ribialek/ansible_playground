@@ -1,4 +1,0 @@
-- name: Example playbook
-  host: web
-  roles:
-    - role: users

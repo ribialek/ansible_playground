@@ -1,0 +1,114 @@
+vagrantfile_api_version = "2"
+# Project Name (VirtualBox Group Name)
+vb_group_name = "/ansible"
+# Project description
+project_description = "Ansible Playground"
+# Default system resources
+default_os = "centos/7"
+default_cpus = "1"
+default_mem = "512"
+default_boot = "disk"
+domain = "local"
+
+
+##################
+# VM parameters
+##################
+boxes = [
+  { :name => :ansible, :role => 'mgt',  :os => default_os,  :ip => "10.0.13.151", :cpus => default_cpus, :mem => 1024,  :primary => true,   :autostart => true },
+  { :name => :centos, :role => 'client',  :os => default_os, :ip => "10.0.13.152", :cpus => default_cpus, :mem => default_mem,  :primary => false,   :autostart => true },
+  { :name => :ubuntu, :role => 'client',  :os => "ubuntu/focal64", :ip => "10.0.13.153", :cpus => 1, :mem => default_mem,  :primary => false,   :autostart => true },
+]
+
+####################
+# Install scripts
+####################
+$default = <<INSTALL
+  echo -e "==> Standard system configuration bootstraping\n"
+  timedatectl set-timezone Europe/London
+INSTALL
+
+$centos = <<INSTALL
+  echo -e "==> Standard CentOS configuration bootstraping\n"
+  setenforce 0
+  sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+INSTALL
+
+$ubuntu = <<INSTALL
+  echo -e "==> Standard Ubuntu configuration bootstraping\n"
+INSTALL
+
+$mgt = <<INSTALL
+  echo -e "==> Management instance configuration bootstraping\n"
+  yum -y install python3 python3-pip
+  python3 -m pip install pip --upgrade
+  su vagrant bash -c 'python3 -m pip install ansible'
+INSTALL
+
+Vagrant.configure(vagrantfile_api_version) do |config|
+
+#########################
+# DNS resolution setup
+#########################
+  config.hostmanager.enabled = true
+  #config.hostmanager.manage_host = true
+  config.hostmanager.manage_guest = true
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
+
+#####################################################
+# Default configuration settings (VM provisioning)
+#####################################################
+
+  vm_default = proc do |vb|
+    vb.vm.boot_timeout = 90
+    vb.ssh.insert_key = false
+    vb.vbguest.auto_update = false
+    vb.vbguest.installer_options = { allow_kernel_upgrade: true, reboot_timeout: 5000 }
+  end
+
+#########################################################
+# VM configuration settings per role (VM provisioning)
+#########################################################
+
+  boxes.each do |opts|
+    config.vm.define opts[:name], primary: opts[:primary], autostart: opts[:autostart] do |config|
+      vm_default.call(config)
+      config.vm.box = default_os
+      config.vm.provider :virtualbox do |vb|
+        #vb.name = "%s" % opts[:name].to_s
+        vb.gui = false
+        vb.customize [
+          "modifyvm", :id,
+          "--memory", opts[:mem],
+          "--cpus", opts[:cpus],
+          "--boot1", default_boot,
+          "--vram", "8",
+          "--audio", "none",
+          "--groups", vb_group_name,
+          "--description", project_description
+        ]
+      end
+      config.vm.host_name = "%s.#{domain}" % opts[:name].to_s
+      config.hostmanager.aliases = "%s" % opts[:name].to_s
+      config.vm.network :private_network, ip: opts[:ip]
+      config.vm.provision "shell", inline: $default, run: "once"
+      if opts[:os] == 'centos/7'
+        config.vm.provision "file", source: "../extras/motd/centos", destination: "/tmp/motd"
+        config.vm.provision "shell", inline: "mv /tmp/motd /etc/motd"
+        config.vm.provision "shell", inline: $centos, run: "once"
+      end
+      if opts[:os] == 'ubuntu/focal64'
+        config.vm.provision "file", source: "../extras/motd/ubuntu", destination: "/tmp/motd"
+        config.vm.provision "shell", inline: "mv /tmp/motd /etc/motd"
+      end
+      if opts[:role] == 'mgt'
+        config.vm.synced_folder ".", "/vagrant", disabled: false, type: "nfs"
+        config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/id_rsa"
+        config.vm.provision "file", source: "../extras/motd/ansible", destination: "/tmp/motd"
+        config.vm.provision "shell", inline: "mv /tmp/motd /etc/motd"
+        config.vm.provision "shell", inline: $mgt, run: "once"
+      end
+    end
+  end
+end
