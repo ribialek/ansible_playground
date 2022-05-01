@@ -5,7 +5,9 @@ Overview
 ---------
 - each project has its own infrastructure managed by vagrant.
 - vagrant infrastructure to be destroyed when project completed.<br />
-  NOTE: destroy infrastructure to avoid conflicts (nfs share errors)
+  **NOTE:** destroy infrastructure to avoid conflicts (nfs share errors).<br />
+- create your own branch `<github_username>_<project>` (e.g. `NMankrado_project1`) before starting working with project.<br />
+  **NOTE:** do not merge your branch with master branch.<br />
 
 Requirements
 ------------
