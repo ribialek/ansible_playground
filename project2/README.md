@@ -59,7 +59,7 @@ Ansible deployment
 ```shell
 # make sure you're in root directory of the repository
 cd project2 && vagrant ssh
-# inside ansible vm change to project1 directory where projects inventory and playbooks are
+# inside ansible vm change to project2 directory
 cd /vagrant/project2
 # run ansible-playbook with your playbook(s)
 ```
