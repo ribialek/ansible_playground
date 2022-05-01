@@ -39,18 +39,18 @@ Switch to directory **project2** if not already there
 		- name: "user3"
 			uid: 1007
 	```
-	HINTS:
+	**HINTS:**
 	- use two tasks executed conditionally based on required parameter (user's 'uid')
 	- cleanup role from unused subfolders (good practice)
 5. Create task in role **packages**:
 	- "httpd" -> to be installed on all supported
 	- "vim" -> to be installed on all
-	HINTS:
+	**HINTS:**
 	- httpd package is only supported on RedHat/CentOS, maybe 'ansible_facts.os_family' could be used to set condition where package is deployed
 6. Create task in role **services**:
 	- check if 'postfix' is running
 	- stop and disable 'postfix' only if postfix is running
-	HINTS:
+	**HINTS:**
 	- use register to catch output of running services as variable
 	- use condition with registered variable to determine if disabling service task should run
 
