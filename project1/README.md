@@ -9,7 +9,7 @@ Infrastructure Setup
 ```shell
 # make sure you're in root directory of the repository
 git pull
-vagrant up
+cd project1 && vagrant up
 vagrant status
 # accessing instances
 vagrant ssh # to access ansible management instance
@@ -35,7 +35,7 @@ Ansible deployment
 ------------------
 ```shell
 # make sure you're in root directory of the repository
-vagrant ssh
+cd project1 && vagrant ssh
 # inside ansible vm change to project1 directory where projects inventory and playbooks are
 cd /vagrant/project1
 # run ansible-playbook with your playbook(s)
@@ -45,6 +45,5 @@ Vagrant cleanup
 ----------------
 ```shell
 # make sure you're in root directory of the repository
-cd project1
-vagrant destroy -f
+cd project1 && vagrant destroy -f
 ```
